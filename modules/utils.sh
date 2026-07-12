@@ -53,3 +53,17 @@ check_dependencies() {
 
     return 0
 }
+
+# --- Input Validation ---
+
+is_valid_choice() {
+    local choice="$1"
+    local min="$2"
+    local max="$3"
+
+    if [[ "$choice" =~ ^[0-9]+$ ]] && [ "$choice" -ge "$min" ] && [ "$choice" -le "$max" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
