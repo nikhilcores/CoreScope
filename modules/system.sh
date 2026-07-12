@@ -43,3 +43,34 @@ display_system_info() {
     log_info "Uptime: $(get_uptime)"
 }
 
+# --- Resource Usage Functions ---
+
+get_cpu_usage() {
+    top -bn1 | grep "Cpu(s)" | awk '{print $2 + $4"%"}'
+}
+
+get_memory_usage() {
+    free -m | awk 'NR==2{printf "%.1f%%", $3*100/$2}'
+}
+
+get_disk_usage() {
+    df -h / | awk 'NR==2{print $5}'
+}
+
+display_resource_usage() {
+    local cpu mem disk
+
+    cpu=$(get_cpu_usage)
+    mem=$(get_memory_usage)
+    disk=$(get_disk_usage)
+
+    log_info "CPU Usage: $cpu"
+    log_info "Memory Usage: $mem"
+    log_info "Disk Usage: $disk"
+
+    # Warning checks
+    local cpu_num="${cpu%.*}"
+    if [ "$cpu_num" -ge 80 ] 2>/dev/null; then
+        log_warn "High CPU usage detected!"
+    fi
+}
