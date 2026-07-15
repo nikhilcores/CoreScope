@@ -39,3 +39,38 @@ display_login_summary() {
         log_warn "High number of failed login attempts detected!"
     fi
 }
+
+# --- Sudo Activity ---
+
+get_sudo_activity() {
+    if [ -f "$AUTH_LOG" ]; then
+        grep "sudo:" "$AUTH_LOG" 2>/dev/null | grep "COMMAND=" | wc -l
+    else
+        echo "N/A"
+    fi
+}
+
+# --- Last Boot Time ---
+
+get_last_boot() {
+    who -b 2>/dev/null | awk '{print $3, $4}'
+}
+
+display_security_summary() {
+    local failed successful sudo_count last_boot
+
+    failed=$(get_failed_logins)
+    successful=$(get_successful_logins)
+    sudo_count=$(get_sudo_activity)
+    last_boot=$(get_last_boot)
+
+    log_info "===== Security Summary ====="
+    log_info "Failed SSH Logins: $failed"
+    log_info "Successful SSH Logins: $successful"
+    log_info "Sudo Commands Executed: $sudo_count"
+    log_info "Last Boot Time: $last_boot"
+
+    if [ "$failed" -gt 10 ] 2>/dev/null; then
+        log_warn "High number of failed login attempts — possible brute-force activity!"
+    fi
+}
