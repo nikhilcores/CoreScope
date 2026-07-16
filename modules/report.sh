@@ -4,7 +4,8 @@
 # report.sh - Report generation module
 # ==========================================
 
-readonly REPORTS_DIR="../reports"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+readonly REPORTS_DIR="$SCRIPT_DIR/../reports"
 
 generate_report() {
     local timestamp
