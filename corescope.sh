@@ -6,6 +6,9 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# --- Handle Ctrl+C gracefully ---
+trap 'echo ""; log_warn "Interrupted by user. Exiting..."; exit 130' SIGINT
+
 # --- Source all modules ---
 source "$SCRIPT_DIR/modules/utils.sh"
 source "$SCRIPT_DIR/modules/system.sh"
