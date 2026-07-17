@@ -70,7 +70,7 @@ display_resource_usage() {
 
     # Warning checks
     local cpu_num="${cpu%.*}"
-    if [ "$cpu_num" -ge 80 ] 2>/dev/null; then
+    if [ "$cpu_num" -ge "$CPU_WARN_THRESHOLD" ] 2>/dev/null; then
         log_warn "High CPU usage detected!"
     fi
 }
