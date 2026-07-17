@@ -11,12 +11,22 @@ generate_report() {
     local timestamp
     timestamp=$(date +"%Y-%m-%d_%H-%M-%S")
 
-    local report_file="${REPORTS_DIR}/report-${timestamp}.md"
+    echo -n "Enter save location (press Enter for default: reports/): "
+    read -r custom_path
 
-    if [ ! -d "$REPORTS_DIR" ]; then
-        log_error "Reports directory not found: $REPORTS_DIR"
-        return 1
+    local save_dir
+    if [ -z "$custom_path" ]; then
+        save_dir="$REPORTS_DIR"
+    else
+        save_dir="$custom_path"
     fi
+
+    if [ ! -d "$save_dir" ]; then
+        log_warn "Directory '$save_dir' does not exist. Creating it..."
+        mkdir -p "$save_dir"
+    fi
+
+    local report_file="${save_dir}/report-${timestamp}.md"
 
     {
         echo "# CoreScope Security Report"
