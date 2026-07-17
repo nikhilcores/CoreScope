@@ -4,7 +4,6 @@
 # logs.sh - Log analysis module
 # ==========================================
 
-readonly AUTH_LOG="/var/log/auth.log"
 
 get_failed_logins() {
     if [ -f "$AUTH_LOG" ]; then
@@ -35,7 +34,7 @@ display_login_summary() {
     log_info "Failed Login Attempts: $failed"
     log_info "Successful Logins: $successful"
 
-    if [ "$failed" -gt 10 ] 2>/dev/null; then
+    if [ "$failed" -gt "$FAILED_LOGIN_WARN_THRESHOLD" ] 2>/dev/null; then
         log_warn "High number of failed login attempts detected!"
     fi
 }
@@ -70,7 +69,7 @@ display_security_summary() {
     log_info "Sudo Commands Executed: $sudo_count"
     log_info "Last Boot Time: $last_boot"
 
-    if [ "$failed" -gt 10 ] 2>/dev/null; then
+    if [ "$failed" -gt "$FAILED_LOGIN_WARN_THRESHOLD" ] 2>/dev/null; then
         log_warn "High number of failed login attempts — possible brute-force activity!"
     fi
 }
