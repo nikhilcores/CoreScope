@@ -129,7 +129,7 @@ configuration, graceful error handling, and zero external dependencies.
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR-USERNAME/CoreScope.git
+git clone https://github.com/nikhilcores/CoreScope.git
 
 # Navigate into project directory
 cd CoreScope
